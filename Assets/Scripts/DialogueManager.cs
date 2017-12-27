@@ -27,16 +27,17 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	void Update(){
-		if ( Input.GetMouseButtonDown(1) ) {
-			LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
-		}
 		if ( DuringDialogue() && ( Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return) ) ) {
 			ToNextLine ();
+		} else if ( Input.GetMouseButtonDown(0) ) {
+			LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
 		}
 	}
 
 	public void LoadDialogueFile(string fileName, string label, Func<string,string> ReplaceWords, Dictionary<string,int> comparedVariables){
 		TextAsset dialogueTextAsset = Resources.Load<TextAsset> ("Texts/" + fileName);
+		Debug.Log (fileName);
+		Debug.Assert (dialogueTextAsset != null);
 		string entireFile = dialogueTextAsset.text;
 		string withinLabels = GetTextWithinLabels (label, entireFile);
 		string dialoguesString = ReplaceWords (withinLabels);
