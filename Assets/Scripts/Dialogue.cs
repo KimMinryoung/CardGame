@@ -69,7 +69,7 @@ public class Dialogue {
 				}
 				//emotion = parts[1];
 				//load portrait
-				string dialogueText=parts[2];
+				string dialogueText=parts[2].Replace('^','\n');
 				LoadTextBox(dialogueText);
 			}
 
