@@ -29,18 +29,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start(){
+		/*
 		persons = new Dictionary<string, Person> ();
 		prisoners = new Dictionary<string, Person> ();
 
 		Magic.CreateAllMagics ();
 
-		/*
 		stats ["체력"] = a;
 		stats ["정신"] = b;
 		stats ["민첩"] = c;
 		stats ["마력"] = d;
 		stats ["지능"] = e;
-		stats ["행운"] = f;*/
+		stats ["행운"] = f;
 		persons ["젠"] = new Person ("젠", 30, 30, 20, 20, 50, 20);
 		persons ["젠"].AddMagic ("평타");
 		persons ["아이리스"] = new Person ("아이리스", 15, 5, 10, 25, 70, 10);
@@ -52,5 +52,6 @@ public class GameManager : MonoBehaviour {
 		prisoners ["바올리"] = persons ["바올리"];
 		//TortureManager.Instance.InitiateTorture ();
 		BattleManager.Instance.InitiateBattle();
+		*/
 	}
 }

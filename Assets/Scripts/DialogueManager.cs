@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour {
 	private static DialogueManager instance;
@@ -27,10 +28,12 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	void Update(){
-		if ( DuringDialogue() && ( Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return) ) ) {
-			ToNextLine ();
-		} else if ( Input.GetMouseButtonDown(0) ) {
-			LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
+		if (SceneManager.GetActiveScene ().name == "Story") {
+			if (DuringDialogue () && (Input.GetMouseButtonDown (0) || Input.GetKeyDown (KeyCode.Return))) {
+				ToNextLine ();
+			} else if (!DuringDialogue ()) {
+				LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
+			}
 		}
 	}
 

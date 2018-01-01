@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Dialogue {
 
@@ -90,6 +91,9 @@ public class Dialogue {
 		else if(commandType=="스크립트"){
 			LoadEffectScript (commandObject);
 		}
+		else if(commandType=="타이틀로"){
+			LoadToTheTitle ();
+		}
 		else if(commandType=="배경"){
 			LoadEffectBackground (commandObject);
 		}
@@ -126,6 +130,11 @@ public class Dialogue {
 	private void LoadEffectScript(string commandObject){
 		Effect = () => {
 			dm.LoadDialogueFile(commandObject, null, DialogueManager.NoReplace, DialogueManager.emptyCV);
+		};
+	}
+	private void LoadToTheTitle(){
+		Effect = () => {
+			SceneManager.LoadScene("Title");
 		};
 	}
 	private void LoadEffectBackground(string commandObject){
