@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour {
-	private static DialogueManager instance;
+	static DialogueManager instance;
 	public static DialogueManager Instance {
 		get { return instance; }
 	}
@@ -46,7 +46,7 @@ public class DialogueManager : MonoBehaviour {
 		string dialoguesString = ReplaceWords (withinLabels);
 		LoadDialoguesString (dialoguesString, comparedVariables);
 	}
-	private string GetTextWithinLabels(string label, string entireText){
+	string GetTextWithinLabels(string label, string entireText){
 		if (label == null)
 			return entireText;
 		string codedLabel = "{" + label + "}";
@@ -59,7 +59,7 @@ public class DialogueManager : MonoBehaviour {
 		withinLabels = parts [1];
 		return withinLabels;
 	}
-	private void LoadDialoguesString(string dialoguesString, Dictionary<string,int> comparedVariables){
+	void LoadDialoguesString(string dialoguesString, Dictionary<string,int> comparedVariables){
 		string[] dialogueLines = dialoguesString.Split (new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 		foreach(string line in dialogueLines) {
 			LoadDialogueLine (line, comparedVariables);
@@ -81,12 +81,12 @@ public class DialogueManager : MonoBehaviour {
 			ExecutePresentLine();
 	}
 
-	private void DialoguesClear(){
+	void DialoguesClear(){
 		dialogues.Clear ();
 		lineNum = 0;
 	}
 
-	private bool LineOver(){
+	bool LineOver(){
 		if (lineNum >= dialogues.Count) {
 			DialoguesClear ();
 			dd.DialogueDisplayClear ();

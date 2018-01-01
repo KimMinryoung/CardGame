@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour {
-	private static SoundManager instance = null;
+	static SoundManager instance = null;
 	public static SoundManager Instance { get { return instance; } }
 
 	AudioSource soundPlayer;

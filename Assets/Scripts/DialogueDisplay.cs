@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueDisplay : MonoBehaviour {
-	private static DialogueDisplay instance;
+	static DialogueDisplay instance;
 	public static DialogueDisplay Instance {
 		get { return instance; }
 	}
@@ -82,7 +82,7 @@ public class DialogueDisplay : MonoBehaviour {
 	public void RemoveBackgroundSprite(){
 		PutBackgroundSprite (transparentSprite);
 	}
-	private void PutBackgroundSprite(Sprite sprite){
+	void PutBackgroundSprite(Sprite sprite){
 		background.sprite = sprite;
 	}
 	public void PutBackgroundSprite(String name){
@@ -92,17 +92,21 @@ public class DialogueDisplay : MonoBehaviour {
 	public void RemovePortraitSprite(){
 		PutPortraitSprite (transparentSprite);
 	}
-	private void PutPortraitSprite(Sprite sprite){
+	void PutPortraitSprite(Sprite sprite){
 		portrait.sprite = sprite;
 	}
 	public void PutPortraitSprite(String name){
 		Sprite sprite=Resources.Load<Sprite>("Portraits/"+name);
-		PutPortraitSprite(sprite);
+		if (sprite == null) {
+			RemovePortraitSprite ();
+		} else {
+			PutPortraitSprite (sprite);
+		}
 	}
 	public void RemoveIllustSprite(){
 		PutIllustSprite (transparentSprite);
 	}
-	private void PutIllustSprite(Sprite sprite){
+	void PutIllustSprite(Sprite sprite){
 		illustObject.GetComponent<Image>().sprite = sprite;
 		illustObject.GetComponent<RectTransform> ().sizeDelta = sprite.rect.size;
 	}

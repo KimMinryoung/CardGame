@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TortureUI : MonoBehaviour {
-	private static TortureUI instance;
+	static TortureUI instance;
 	public static TortureUI Instace {
 		get { return instance; }
 	}
 
 	public static TortureManager tortureManager;
 	public static GameObject Canvas;
-	private static GameObject SmallButton;
-	private List<GameObject> tortureButtons;
+	static GameObject SmallButton;
+	List<GameObject> tortureButtons;
 
 	// Use this for initialization
 	void Awake () {

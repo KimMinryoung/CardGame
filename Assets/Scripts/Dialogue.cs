@@ -68,7 +68,7 @@ public class Dialogue {
 					NameBox = EmptyNameBox;
 				}
 				//emotion = parts[1];
-				//load portrait
+				LoadPortraitBox(name);
 				string dialogueText=parts[2].Replace('^','\n');
 				LoadTextBox(dialogueText);
 			}
@@ -84,7 +84,7 @@ public class Dialogue {
 		}
 	}
 
-	private void LoadEffectCommand(string commandType,string commandObject){
+	void LoadEffectCommand(string commandType,string commandObject){
 		if(commandType == "사라져"){
 			LoadEffectDisappear (commandObject);
 		}
@@ -110,7 +110,7 @@ public class Dialogue {
 			Debug.LogError("undefined effectType : " + commandType);
 		}
 	}
-	private void LoadEffectDisappear(string commandObject){
+	void LoadEffectDisappear(string commandObject){
 		if(commandObject=="배경"){
 			Effect = () => {
 				dd.RemoveBackgroundSprite();
@@ -127,37 +127,37 @@ public class Dialogue {
 			};
 		}
 	}
-	private void LoadEffectScript(string commandObject){
+	void LoadEffectScript(string commandObject){
 		Effect = () => {
 			dm.LoadDialogueFile(commandObject, null, DialogueManager.NoReplace, DialogueManager.emptyCV);
 		};
 	}
-	private void LoadToTheTitle(){
+	void LoadToTheTitle(){
 		Effect = () => {
 			SceneManager.LoadScene("Title");
 		};
 	}
-	private void LoadEffectBackground(string commandObject){
+	void LoadEffectBackground(string commandObject){
 		Effect = () => {
 			dd.PutBackgroundSprite(commandObject);
 		};
 	}
-	private void LoadEffectIllust(string commandObject){
+	void LoadEffectIllust(string commandObject){
 		Effect = () => {
 			dd.PutIllustSprite(commandObject);
 		};
 	}
-	private void LoadEffectBGM(string commandObject){
+	void LoadEffectBGM(string commandObject){
 		Effect = () => {
 			SoundManager.Instance.PlayBGM(commandObject);
 		};
 	}
-	private void LoadEffectSE(string commandObject){
+	void LoadEffectSE(string commandObject){
 		Effect = () => {
 			SoundManager.Instance.PlaySE(commandObject);
 		};
 	}
-	private void LoadBranch(string destinyLabel){
+	void LoadBranch(string destinyLabel){
 		Branch = () => {
 			bool success = false;
 			Dialogue line_;
@@ -177,7 +177,7 @@ public class Dialogue {
 			dm.ExecutePresentLine();
 		};
 	}
-	private void LoadCondition(string compareText, Dictionary<string, int> comparedVariables){
+	void LoadCondition(string compareText, Dictionary<string, int> comparedVariables){
 		Condition=()=>{
 			string[] tokens = compareText.Split (' ');
 
@@ -189,18 +189,23 @@ public class Dialogue {
 			return compareResult;
 		};
 	}
-	private void LoadAddValue(string targetStat, int addedValue, Dictionary<string, int> comparedVariables){
+	void LoadAddValue(string targetStat, int addedValue, Dictionary<string, int> comparedVariables){
 		ChangeValue = () => {
 			comparedVariables[targetStat] += addedValue;
 		};
 	}
-	private void LoadNameBox(string name){
+	void LoadNameBox(string name){
 		NameBox = () =>{
 			dd.EnableNameBox();
 			dd.PutNameText(name);
 		};
 	}
-	private void LoadTextBox(string dialogueText){
+	void LoadPortraitBox(string name){
+		PortraitBox = () => {
+			dd.PutPortraitSprite(name);
+		};
+	}
+	void LoadTextBox(string dialogueText){
 		string displayedText = "";
 		string[] textLines=dialogueText.Split('\t');
 		foreach(string textline in textLines){
@@ -231,7 +236,7 @@ public class Dialogue {
 		DontWaitInput ();
 	}
 
-	private void ConditionAndBranch(){
+	void ConditionAndBranch(){
 		bool result = Condition ();
 		if (result)
 			Branch ();
@@ -239,41 +244,41 @@ public class Dialogue {
 			DontWaitInput = TrueDontWaitInput;
 	}
 
-	private static Action NullNameBox = () => {
+	static Action NullNameBox = () => {
 		//don't change current name box
 		//do nothing
 	};
-	private static Action EmptyNameBox = () => {
+	static Action EmptyNameBox = () => {
 		dd.DisableNameBox();
 		dd.PutNameText(null);
 	};
-	private static Action NullText = () => {
+	static Action NullText = () => {
 		//don't change current text
 		//do nothing
 	};
-	/*private static Action EmptyText = () => {
+	/*static Action EmptyText = () => {
 		dd.DisableTextBox();
 		dd.PutTextText(null);
 	};*/
-	private static Action NullPortraitBox = () => {
+	static Action NullPortraitBox = () => {
 		dd.RemovePortraitSprite();
 	};
-	private static Action NullEffect = () => {
+	static Action NullEffect = () => {
 		//do nothing
 	};
-	private static Action NullBranch = () => {
+	static Action NullBranch = () => {
 		//do nothing
 	};
-	private static Func<bool> NullCondition = () => {//this is called for non-conditioned branch
+	static Func<bool> NullCondition = () => {//this is called for non-conditioned branch
 		return true;
 	};
-	private static Action NullChangeValue = () => {
+	static Action NullChangeValue = () => {
 		//do nothing
 	};
-	private static Action NullDontWaitInput = () => {
+	static Action NullDontWaitInput = () => {
 		//do nothing
 	};
-	private static Action TrueDontWaitInput = () => {
+	static Action TrueDontWaitInput = () => {
 		dm.ToNextLine();
 	};
 }
