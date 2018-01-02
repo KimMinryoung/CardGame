@@ -103,6 +103,12 @@ public class DialogueDisplay : MonoBehaviour {
 			PutPortraitSprite (sprite);
 		}
 	}
+	public void BlackenPortraitSprite(){
+		portrait.color = Color.black;
+	}
+	public void BrightenPortraitSprite(){
+		portrait.color = Color.white;
+	}
 	public void RemoveIllustSprite(){
 		PutIllustSprite (transparentSprite);
 	}

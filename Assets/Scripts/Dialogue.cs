@@ -67,8 +67,8 @@ public class Dialogue {
 				else{
 					NameBox = EmptyNameBox;
 				}
-				//emotion = parts[1];
-				LoadPortraitBox(name);
+				string portraitFileName = parts[1];
+				LoadPortraitBox(portraitFileName);
 				string dialogueText=parts[2].Replace('^','\n');
 				LoadTextBox(dialogueText);
 			}
@@ -200,10 +200,18 @@ public class Dialogue {
 			dd.PutNameText(name);
 		};
 	}
-	void LoadPortraitBox(string name){
-		PortraitBox = () => {
-			dd.PutPortraitSprite(name);
-		};
+	void LoadPortraitBox(string portraitFileName){
+		if (portraitFileName.Contains ("^")) {
+			PortraitBox = () => {
+				dd.BlackenPortraitSprite ();
+				dd.PutPortraitSprite (portraitFileName.Replace("^", ""));
+			};
+		} else {
+			PortraitBox = () => {
+				dd.BrightenPortraitSprite ();
+				dd.PutPortraitSprite (portraitFileName);
+			};
+		}
 	}
 	void LoadTextBox(string dialogueText){
 		string displayedText = "";
