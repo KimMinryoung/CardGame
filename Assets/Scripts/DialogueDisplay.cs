@@ -120,4 +120,23 @@ public class DialogueDisplay : MonoBehaviour {
 		Sprite sprite=Resources.Load<Sprite>("Illusts/"+name);
 		PutIllustSprite(sprite);
 	}
+	bool isShaking = false;
+	float remainShakePower = 0.0f;
+	public void StartShaking(float initialPower){
+		isShaking = true;
+		remainShakePower = initialPower;
+	}
+	void Update () {
+		if (isShaking) {
+			if (remainShakePower > 0) {
+				remainShakePower -= 1.0f * Time.deltaTime;
+				Vector2 offset = 10 * UnityEngine.Random.insideUnitCircle * remainShakePower;
+				gameObject.transform.localPosition = new Vector3 (offset.x, offset.y, gameObject.transform.localPosition.z);
+			} else {
+				gameObject.transform.localPosition = new Vector3 (0, 0, gameObject.transform.localPosition.z);
+				remainShakePower = 0;
+				isShaking = false;
+			}
+		}
+	}
 }

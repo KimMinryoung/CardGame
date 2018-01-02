@@ -85,29 +85,24 @@ public class Dialogue {
 	}
 
 	void LoadEffectCommand(string commandType,string commandObject){
-		if(commandType == "사라져"){
+		if (commandType == "사라져") {
 			LoadEffectDisappear (commandObject);
-		}
-		else if(commandType=="스크립트"){
+		} else if (commandType == "스크립트") {
 			LoadEffectScript (commandObject);
-		}
-		else if(commandType=="타이틀로"){
+		} else if (commandType == "타이틀로") {
 			LoadToTheTitle ();
-		}
-		else if(commandType=="배경"){
+		} else if (commandType == "배경") {
 			LoadEffectBackground (commandObject);
-		}
-		else if(commandType=="일러"){
+		} else if (commandType == "일러") {
 			LoadEffectIllust (commandObject);
-		}
-		else if(commandType=="배경음"){
+		} else if (commandType == "배경음") {
 			LoadEffectBGM (commandObject);
-		}
-		else if(commandType=="효과음"){
+		} else if (commandType == "효과음") {
 			LoadEffectSE (commandObject);
-		}
-		else{
-			Debug.LogError("undefined effectType : " + commandType);
+		} else if (commandType == "흔들어") {
+			LoadEffectShaking ();
+		} else {
+			Debug.LogError ("undefined effectType : " + commandType);
 		}
 	}
 	void LoadEffectDisappear(string commandObject){
@@ -155,6 +150,11 @@ public class Dialogue {
 	void LoadEffectSE(string commandObject){
 		Effect = () => {
 			SoundManager.Instance.PlaySE(commandObject);
+		};
+	}
+	void LoadEffectShaking(){
+		Effect = () => {
+			dd.StartShaking (2);
 		};
 	}
 	void LoadBranch(string destinyLabel){
