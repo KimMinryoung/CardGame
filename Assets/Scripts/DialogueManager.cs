@@ -29,7 +29,7 @@ public class DialogueManager : MonoBehaviour {
 
 	void Update(){
 		if (SceneManager.GetActiveScene ().name == "Story") {
-			if (DuringDialogue () && (Input.GetMouseButtonDown (0) || Input.GetKeyDown (KeyCode.Return))) {
+			if (DuringDialogue () && (Input.GetMouseButtonDown (0) || Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
 				ToNextLine ();
 			} else if (!DuringDialogue ()) {
 				LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
