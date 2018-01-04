@@ -9,10 +9,15 @@ public class SoundManager : MonoBehaviour {
 
 	AudioSource soundPlayer;
 
+	float defaultVolume = 1.0f;
+
 	static Dictionary<string, AudioClip> BGMs;
 	static Dictionary<string, AudioClip> SEs;
 
-	public IEnumerator PlayBGM(string name){
+	public void PlayBGM(string name){
+		StartCoroutine (PlayBGMCoroutine (name));
+	}
+	IEnumerator PlayBGMCoroutine(string name){
 		if (soundPlayer.clip == null) {
 			PlayNewBGM (name);
 			yield break;
@@ -40,7 +45,7 @@ public class SoundManager : MonoBehaviour {
 			soundPlayer.clip = null;
 		} else {
 			soundPlayer.clip = BGMs [name];
-			//soundPlayer.volume = Configuration.BGMVolume;
+			soundPlayer.volume = defaultVolume;
 			soundPlayer.Play ();
 		}
 	}
