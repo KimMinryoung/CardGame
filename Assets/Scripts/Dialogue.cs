@@ -221,16 +221,16 @@ public class Dialogue {
 		}
 		displayedText = displayedText.Substring(0,displayedText.Length-1);
 		Text = () => {
-			dd.EnableTextBox();
-			dd.PutTextText(displayedText);
+			dd.EnableContentBox();
+			dd.PutContentText(displayedText);
 		};
 	}
 
 	public void LoadMessageLine(string line){
 		NameBox = EmptyNameBox;
 		Text = () => {
-			dd.EnableTextBox();
-			dd.PutTextText(line);
+			dd.EnableContentBox();
+			dd.PutContentText(line);
 		};
 	}
 
@@ -264,10 +264,6 @@ public class Dialogue {
 		//don't change current text
 		//do nothing
 	};
-	/*static Action EmptyText = () => {
-		dd.DisableTextBox();
-		dd.PutTextText(null);
-	};*/
 	static Action NullPortraitBox = () => {
 		dd.RemovePortraitSprite();
 	};

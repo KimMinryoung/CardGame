@@ -33,6 +33,7 @@ public class SoundManager : MonoBehaviour {
 		while (true) {
 			time += Time.deltaTime;
 			if (time > FADETIME) {
+				soundPlayer.volume = 0;
 				break;
 			}
 			soundPlayer.volume -= initialVolume * Time.deltaTime / FADETIME;

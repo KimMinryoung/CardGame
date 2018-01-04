@@ -17,8 +17,11 @@ public class DialogueDisplay : MonoBehaviour {
 	Image portrait;
 	Image nameBox;
 	Text nameText;
-	Image textBox;
-	Text textText;
+	Image contentBox;
+	Text contentText;
+	GameObject dialogueLogBox;
+	Text dialogueLogContentText;
+	Text dialogueLogNameText;
 
 	Sprite transparentSprite;
 
@@ -28,27 +31,22 @@ public class DialogueDisplay : MonoBehaviour {
 		Dialogue.dd = this;
 		DialogueManager.dd = this;
 
-		if (!manager)
-			manager=GameObject.Find ("DialogueManager").GetComponent<Transform>();
+		manager=GameObject.Find ("DialogueManager").GetComponent<Transform>();
 		
-		if (!background)
-			background=manager.Find ("Background").GetComponent<Image>();
-		if (!illustObject)
-			illustObject=manager.Find ("Illust");
-		if (!portrait)
-			portrait=manager.Find ("Portrait").GetComponent<Image>();
-		if (!nameBox)
-			nameBox=manager.Find ("NameBox").GetComponent<Image>();
-		if (!textBox)
-			textBox=manager.Find ("TextBox").GetComponent<Image>();
+		background=manager.Find ("Background").GetComponent<Image>();
+		illustObject=manager.Find ("Illust");
+		portrait=manager.Find ("Portrait").GetComponent<Image>();
+		nameBox=manager.Find ("NameBox").GetComponent<Image>();
+		nameText=manager.Find ("NameBox").Find ("NameText").GetComponent<Text>();
+		contentBox=manager.Find ("ContentBox").GetComponent<Image>();
+		contentText=manager.Find ("ContentBox").Find ("ContentText").GetComponent<Text>();
+		dialogueLogBox = manager.Find ("DialogueLogBox").gameObject;
+		dialogueLogNameText = dialogueLogBox.transform.Find ("DialogueLogNameText").GetComponent<Text>();
+		dialogueLogContentText = dialogueLogBox.transform.Find ("DialogueLogContentText").GetComponent<Text> ();
 
 		transparentSprite = Resources.Load<Sprite> ("UIImages/transparent");
 
-		if (!nameText)
-			nameText=manager.Find ("NameText").GetComponent<Text>();
-		if (!textText)
-			textText=manager.Find ("TextText").GetComponent<Text>();
-		
+		dialogueLogs = new List<DialogueLog> ();
 	}
 	void Start(){
 		DialogueDisplayClear ();
@@ -57,9 +55,9 @@ public class DialogueDisplay : MonoBehaviour {
 		RemovePortraitSprite ();
 		RemoveIllustSprite ();
 		DisableNameBox ();
-		DisableTextBox ();
+		DisableContentBox ();
 		PutNameText (null);
-		PutTextText (null);
+		PutContentText (null);
 	}
 	public void DisableNameBox(){
 		nameBox.enabled = false;
@@ -67,17 +65,17 @@ public class DialogueDisplay : MonoBehaviour {
 	public void EnableNameBox(){
 		nameBox.enabled = true;
 	}
-	public void DisableTextBox(){
-		textBox.enabled = false;
+	public void DisableContentBox(){
+		contentBox.enabled = false;
 	}
-	public void EnableTextBox(){
-		textBox.enabled = true;
+	public void EnableContentBox(){
+		contentBox.enabled = true;
 	}
 	public void PutNameText(string text){
 		nameText.text = text;
 	}
-	public void PutTextText(string text){
-		textText.text = text;
+	public void PutContentText(string text){
+		contentText.text = text;
 	}
 	public void RemoveBackgroundSprite(){
 		PutBackgroundSprite (transparentSprite);
@@ -126,6 +124,38 @@ public class DialogueDisplay : MonoBehaviour {
 		isShaking = true;
 		remainShakePower = initialPower;
 	}
+
+	public class DialogueLog{
+		public string speakerName;
+		public string content;
+		public DialogueLog(string speakerName, string content){
+			this.speakerName = speakerName;
+			this.content = content;
+		}
+	}
+	public List<DialogueLog> dialogueLogs = new List<DialogueLog> ();
+	public void AddDialogueLog(){
+		dialogueLogs.Add (new DialogueLog (nameText.text, contentText.text.Replace("\n"," ")));
+	}
+	void PrintDialogueLog(){
+		foreach (DialogueLog log in dialogueLogs) {
+			dialogueLogNameText.text += log.speakerName + "\n";
+			dialogueLogContentText.text += log.content + "\n";
+		}
+	}
+	public void OpenDialogueLog(){
+		dialogueLogNameText.text = null;
+		dialogueLogContentText.text = null;
+		PrintDialogueLog ();
+		dialogueLogBox.SetActive (true);
+	}
+	public void CloseDialogueLog(){
+		dialogueLogBox.SetActive (false);
+	}
+	public bool IsDialogueLogOpen(){
+		return dialogueLogBox.activeInHierarchy;
+	}
+
 	void Update () {
 		if (isShaking) {
 			if (remainShakePower > 0) {
