@@ -32,21 +32,29 @@ public class DialogueManager : MonoBehaviour {
 			if (!DuringDialogue ()) {
 				LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
 			} else if (DuringDialogue ()) {
-				if ((Input.GetMouseButtonUp (0) || Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
-					if (dd.IsDialogueLogOpen ()) {
-						//dd.CloseDialogueLog ();
-					} else {
-						dd.AddDialogueLog ();
-						ToNextLine ();
-					}
+				if ((Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
+					ClickForNextDialogueLine ();
 				} else if (Input.GetKeyDown (KeyCode.L)) {
-					if (dd.IsDialogueLogOpen ()) {
-						dd.CloseDialogueLog ();
-					} else {
-						dd.OpenDialogueLog ();
-					}
+					OpenOrCloseLog ();
 				}
 			}
+		}
+	}
+
+	public void ClickForNextDialogueLine(){
+		if (dd.IsDialogueLogOpen ()) {
+			OpenOrCloseLog ();
+		} else {
+			dd.AddDialogueLog ();
+			ToNextLine ();
+		}
+	}
+
+	public void OpenOrCloseLog(){
+		if (dd.IsDialogueLogOpen ()) {
+			dd.CloseDialogueLog ();
+		} else {
+			dd.OpenDialogueLog ();
 		}
 	}
 
