@@ -19,6 +19,7 @@ public class DialogueDisplay : MonoBehaviour {
 	Text nameText;
 	Image contentBox;
 	Text contentText;
+	GameObject dialogueLogScrollView;
 	GameObject dialogueLogBox;
 	Text dialogueLogContentText;
 	Text dialogueLogNameText;
@@ -40,9 +41,11 @@ public class DialogueDisplay : MonoBehaviour {
 		nameText=manager.Find ("NameBox").Find ("NameText").GetComponent<Text>();
 		contentBox=manager.Find ("ContentBox").GetComponent<Image>();
 		contentText=manager.Find ("ContentBox").Find ("ContentText").GetComponent<Text>();
-		dialogueLogBox = manager.Find ("DialogueLogBox").gameObject;
+		dialogueLogScrollView = manager.Find ("DialogueLogScrollView").gameObject;
+		dialogueLogBox = GameObject.Find ("DialogueLogBox").gameObject;
 		dialogueLogNameText = dialogueLogBox.transform.Find ("DialogueLogNameText").GetComponent<Text>();
 		dialogueLogContentText = dialogueLogBox.transform.Find ("DialogueLogContentText").GetComponent<Text> ();
+		dialogueLogScrollView.SetActive (false);
 
 		transparentSprite = Resources.Load<Sprite> ("UIImages/transparent");
 
@@ -139,21 +142,24 @@ public class DialogueDisplay : MonoBehaviour {
 	}
 	void PrintDialogueLog(){
 		foreach (DialogueLog log in dialogueLogs) {
-			dialogueLogNameText.text += log.speakerName + "\n";
-			dialogueLogContentText.text += log.content + "\n";
+			dialogueLogNameText.text += "\n" + log.speakerName;
+			dialogueLogContentText.text += "\n" + log.content;
 		}
 	}
 	public void OpenDialogueLog(){
 		dialogueLogNameText.text = null;
 		dialogueLogContentText.text = null;
 		PrintDialogueLog ();
-		dialogueLogBox.SetActive (true);
+		RectTransform logBoxRect = dialogueLogBox.GetComponent<RectTransform> ();
+		logBoxRect.sizeDelta = new Vector2 (logBoxRect.rect.width, Math.Max (500, dialogueLogNameText.preferredHeight + 30));
+
+		dialogueLogScrollView.SetActive (true);
 	}
 	public void CloseDialogueLog(){
-		dialogueLogBox.SetActive (false);
+		dialogueLogScrollView.SetActive (false);
 	}
 	public bool IsDialogueLogOpen(){
-		return dialogueLogBox.activeInHierarchy;
+		return dialogueLogScrollView.activeInHierarchy;
 	}
 
 	void Update () {

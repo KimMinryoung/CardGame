@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour {
 			} else if (DuringDialogue ()) {
 				if ((Input.GetMouseButtonUp (0) || Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
 					if (dd.IsDialogueLogOpen ()) {
-						dd.CloseDialogueLog ();
+						//dd.CloseDialogueLog ();
 					} else {
 						dd.AddDialogueLog ();
 						ToNextLine ();
