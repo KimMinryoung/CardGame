@@ -11,12 +11,14 @@ public class Dialogue {
 	public static DialogueManager dm;
 
 	string label = null;
+	List<string> choices;
 	Action NameBox = NullNameBox;
 	Action PortraitBox = NullPortraitBox;
 	Action Text = NullText;
 	Action Effect = NullEffect;
 	Action Branch = NullBranch;
 	Func<bool> Condition = NullCondition;
+	Action ShowChoices = NullShowChoices;
 	Action ChangeValue = NullChangeValue;
 	Action DontWaitInput = NullDontWaitInput;
 
@@ -46,13 +48,20 @@ public class Dialogue {
 				string commandObject = parts[2];
 				LoadEffectCommand(commandType, commandObject);
 			}
-			else if (dtype == "->" || dtype == "?"){
+			else if (dtype == "->" || dtype == "#"){
 				string label = parts[2];
 				LoadBranch(label);
-				if(dtype == "?"){
+				if(dtype == "#"){
 					string compareText = parts[1];
 					LoadCondition(compareText, comparedVariables);
 				}
+			}
+			else if (dtype == "?"){
+				choices=new List<string>();
+				for(int i=1;i<parts.Length;i++){
+					choices.Add(parts[i]);
+				}
+				LoadChoices(choices);
 			}
 			else if(dtype == "+="){
 				string targetStat = parts[1];
@@ -178,15 +187,25 @@ public class Dialogue {
 		};
 	}
 	void LoadCondition(string compareText, Dictionary<string, int> comparedVariables){
-		Condition=()=>{
+		Condition = () => {
 			string[] tokens = compareText.Split (' ');
 
-			int targetValue = comparedVariables [tokens[0]];
+			int targetValue;
+			if (tokens[0] == "선택") {
+				targetValue = dm.choiceNum;
+			} else{
+				targetValue = comparedVariables [tokens [0]];
+			}
 			string compareSymbol = tokens [1];
 			int referenceValue = Convert.ToInt32 (tokens [2]);
 
 			bool compareResult = Util.Compare (targetValue, referenceValue, compareSymbol);
 			return compareResult;
+		};
+	}
+	void LoadChoices(List<string> choices){
+		ShowChoices = () => {
+			dd.CreateChoiceButtons(choices);
 		};
 	}
 	void LoadAddValue(string targetStat, int addedValue, Dictionary<string, int> comparedVariables){
@@ -239,6 +258,7 @@ public class Dialogue {
 		PortraitBox ();
 		Text ();
 		Effect ();
+		ShowChoices ();
 		ConditionAndBranch ();
 		ChangeValue ();
 		DontWaitInput ();
@@ -275,6 +295,9 @@ public class Dialogue {
 	};
 	static Func<bool> NullCondition = () => {//this is called for non-conditioned branch
 		return true;
+	};
+	static Action NullShowChoices = () => {
+		//do nothing
 	};
 	static Action NullChangeValue = () => {
 		//do nothing

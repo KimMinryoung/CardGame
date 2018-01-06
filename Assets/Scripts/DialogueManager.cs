@@ -44,6 +44,8 @@ public class DialogueManager : MonoBehaviour {
 	public void ClickForNextDialogueLine(){
 		if (dd.IsDialogueLogOpen ()) {
 			OpenOrCloseLog ();
+		} else if (dd.choiceButtons != null && dd.choiceButtons.Count >= 1) {
+			// do nothing;
 		} else {
 			dd.AddDialogueLog ();
 			ToNextLine ();
@@ -131,7 +133,9 @@ public class DialogueManager : MonoBehaviour {
 	public bool DuringDialogue(){
 		return dialogues.Count != 0;
 	}
-		
-	public static Dictionary<string, int> emptyCV=new Dictionary<string,int>();
+
+	public int choiceNum;
+
+	public static Dictionary<string, int> emptyCV = new Dictionary<string,int>();
 	public static Func<string, string> NoReplace = (a => a);
 }

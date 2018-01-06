@@ -11,6 +11,7 @@ public class DialogueDisplay : MonoBehaviour {
 	}
 
 	public Transform manager;
+	DialogueManager dm;
 
 	Image background;
 	Transform illustObject;
@@ -19,6 +20,11 @@ public class DialogueDisplay : MonoBehaviour {
 	Text nameText;
 	Image contentBox;
 	Text contentText;
+
+	public GameObject SmallButton;
+	public List<GameObject> choiceButtons;
+	Transform choiceButtonsContainer;
+
 	GameObject dialogueLogScrollView;
 	GameObject dialogueLogBox;
 	Text dialogueLogContentText;
@@ -33,6 +39,7 @@ public class DialogueDisplay : MonoBehaviour {
 		DialogueManager.dd = this;
 
 		manager=GameObject.Find ("DialogueManager").GetComponent<Transform>();
+		dm = manager.GetComponent<DialogueManager> ();
 		
 		background=manager.Find ("Background").GetComponent<Image>();
 		illustObject=manager.Find ("Illust");
@@ -41,6 +48,7 @@ public class DialogueDisplay : MonoBehaviour {
 		nameText=manager.Find ("NameBox").Find ("NameText").GetComponent<Text>();
 		contentBox=manager.Find ("ContentBox").GetComponent<Image>();
 		contentText=manager.Find ("ContentBox").Find ("ContentText").GetComponent<Text>();
+		choiceButtonsContainer = manager.Find ("ChoiceButtonsContainer");
 		dialogueLogScrollView = manager.Find ("DialogueLogScrollView").gameObject;
 		dialogueLogBox = GameObject.Find ("DialogueLogBox").gameObject;
 		dialogueLogNameText = dialogueLogBox.transform.Find ("DialogueLogNameText").GetComponent<Text>();
@@ -128,6 +136,34 @@ public class DialogueDisplay : MonoBehaviour {
 		remainShakePower = initialPower;
 	}
 
+	//  Choices showing part starts
+	public void CreateChoiceButtons(List<string> choices){
+		int x = 0;
+		int y = 150;
+		int ySpace = 75;
+		choiceButtons = new List<GameObject> ();
+		for (int i = 0; i < choices.Count; i++) {
+			GameObject button;
+			int index = i;
+			button = Util.CreateButton (SmallButton, choiceButtonsContainer, x, y, choices [index], () => {
+				dm.choiceNum = index + 1;
+				DestroyChoiceButtons();
+				dm.ClickForNextDialogueLine();
+			});
+			choiceButtons.Add (button);
+			y -= ySpace;
+		}
+	}
+	void DestroyChoiceButtons(){
+		for (int i = choiceButtons.Count - 1; i >= 0; i--) {
+			GameObject button = choiceButtons [i];
+			choiceButtons.Remove (button);
+			GameObject.Destroy (button);
+		}
+	}
+	//  Choices showing part ends
+
+	// Dialogue log part starts
 	public class DialogueLog{
 		public string speakerName;
 		public string content;
@@ -136,7 +172,7 @@ public class DialogueDisplay : MonoBehaviour {
 			this.content = content;
 		}
 	}
-	public List<DialogueLog> dialogueLogs = new List<DialogueLog> ();
+	public static List<DialogueLog> dialogueLogs = new List<DialogueLog> ();
 	public void AddDialogueLog(){
 		dialogueLogs.Add (new DialogueLog (nameText.text, contentText.text.Replace("\n"," ")));
 	}
@@ -161,6 +197,7 @@ public class DialogueDisplay : MonoBehaviour {
 	public bool IsDialogueLogOpen(){
 		return dialogueLogScrollView.activeInHierarchy;
 	}
+	// Dialogue log part ends
 
 	void Update () {
 		if (isShaking) {
