@@ -27,13 +27,21 @@ public class DialogueManager : MonoBehaviour {
 	void Start(){
 	}
 
+	int frameWait = 0;
+	public int fastDialogueFrameLag = 5;
 	void Update(){
 		if (SceneManager.GetActiveScene ().name == "Story") {
 			if (!DuringDialogue ()) {
-				LoadDialogueFile ("Scene#1", null, NoReplace, emptyCV);
+				LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
 			} else if (DuringDialogue ()) {
 				if ((Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
 					ClickForNextDialogueLine ();
+				} else if (Input.GetKey (KeyCode.LeftControl)) {
+					frameWait++;
+					if (frameWait >= fastDialogueFrameLag) {
+						frameWait = 0;
+						ClickForNextDialogueLine ();
+					}
 				} else if (Input.GetKeyDown (KeyCode.L)) {
 					OpenOrCloseLog ();
 				}

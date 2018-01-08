@@ -151,7 +151,7 @@ public class DialogueDisplay : MonoBehaviour {
 			button = Util.CreateButton (SmallButton, choiceButtonsContainer, x, y, choices [index], () => {
 				dm.choiceNum = index + 1;
 				DestroyChoiceButtons();
-				dm.ClickForNextDialogueLine();
+				dm.ToNextLine();
 			});
 			choiceButtons.Add (button);
 			y -= ySpace;
