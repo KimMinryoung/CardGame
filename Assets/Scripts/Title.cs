@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour {
-	public GameObject SmallButton;
+	public GameObject OnlyTextButton;
 	public GameObject Canvas;
 
 	void Awake(){
@@ -13,16 +13,16 @@ public class Title : MonoBehaviour {
 	}
 
 	void Start () {
+		SoundManager.Instance.PlayBGM ("Precious");
+
 		int x = 0;
-		int y = 0;
-		int xSpace = 100;
+		int y = -100;
+		int ySpace = 100;
 		GameObject button;
-		button = Util.CreateButton (SmallButton, Canvas.transform, x, y, "시작한다", () => SceneManager.LoadScene ("Story"));
-		button.GetComponent<RectTransform> ().sizeDelta = new Vector2 (300, 150);
-		button.GetComponent<Image> ().color = new Color (1.0f, 1.0f, 1.0f, 0.5f);
-		button.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (300, 150);
+		button = Util.CreateButton (OnlyTextButton, Canvas.transform, x, y, "시작한다", () => SceneManager.LoadScene ("Story"));
+		button.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (200, 80);
 		button.transform.Find ("Text").GetComponent<Text> ().fontSize = 45;
-		x += xSpace;
+		y += ySpace;
 	}
 
 	void Update () {
