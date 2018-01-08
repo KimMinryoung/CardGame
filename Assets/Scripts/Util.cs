@@ -33,7 +33,7 @@ public class Util {
 	}
 
 	public static bool Compare(int target, int reference, string compareSymbol){
-		if (compareSymbol == "==")
+		if (compareSymbol == "=")
 			return target == reference;
 		else if (compareSymbol == "!=")
 			return target != reference;

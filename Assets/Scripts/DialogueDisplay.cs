@@ -143,6 +143,9 @@ public class DialogueDisplay : MonoBehaviour {
 		int ySpace = 75;
 		choiceButtons = new List<GameObject> ();
 		for (int i = 0; i < choices.Count; i++) {
+			if (choices [i] == "") {
+				break;
+			}
 			GameObject button;
 			int index = i;
 			button = Util.CreateButton (SmallButton, choiceButtonsContainer, x, y, choices [index], () => {
