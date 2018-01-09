@@ -70,16 +70,18 @@ public class Dialogue {
 			}
 			else{
 				string name=dtype;
-				if(name.Length != 0){
+				if(name.Length != 0 && name != ".?"){
 					LoadNameBox(name);
-				}
-				else{
+				} else{
 					NameBox = EmptyNameBox;
 				}
 				string portraitFileName = parts[1];
 				LoadPortraitBox(portraitFileName);
 				string dialogueText=parts[2].Replace('^','\n');
 				LoadTextBox(dialogueText);
+				if(name==".?"){
+					DontWaitInput = AddLogAndDontWaitInput;
+				}
 			}
 
 			if(dtype == "*" || dtype == "+="){
@@ -306,6 +308,10 @@ public class Dialogue {
 		//do nothing
 	};
 	static Action TrueDontWaitInput = () => {
+		dm.ToNextLine();
+	};
+	static Action AddLogAndDontWaitInput = () => {
+		dd.AddDialogueLog();
 		dm.ToNextLine();
 	};
 }
