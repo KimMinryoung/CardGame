@@ -32,8 +32,7 @@ public class Dialogue {
 			if(labelParsed.Length==1){
 				label = null;
 				lineWithoutLabel=labelParsed[0];
-			}
-			else{
+			} else{
 				label = labelParsed[0].Substring("[".Length);
 				DontWaitInput = TrueDontWaitInput;
 				return;
@@ -47,28 +46,24 @@ public class Dialogue {
 				string commandType = parts[1];
 				string commandObject = parts[2];
 				LoadEffectCommand(commandType, commandObject);
-			}
-			else if (dtype == "->" || dtype == "#"){
+			} else if (dtype == "->" || dtype == "#"){
 				string label = parts[2];
 				LoadBranch(label);
 				if(dtype == "#"){
 					string compareText = parts[1];
 					LoadCondition(compareText, comparedVariables);
 				}
-			}
-			else if (dtype == "?"){
+			} else if (dtype == "?"){
 				choices=new List<string>();
 				for(int i=1;i<parts.Length;i++){
 					choices.Add(parts[i]);
 				}
 				LoadChoices(choices);
-			}
-			else if(dtype == "+="){
+			} else if(dtype == "+="){
 				string targetStat = parts[1];
 				int addedValue = Convert.ToInt32 (parts[2]);
 				LoadAddValue(targetStat, addedValue, comparedVariables);
-			}
-			else{
+			} else{
 				string name=dtype;
 				if(name.Length != 0 && name != ".?"){
 					LoadNameBox(name);
@@ -261,17 +256,18 @@ public class Dialogue {
 		Text ();
 		Effect ();
 		ShowChoices ();
-		ConditionAndBranch ();
 		ChangeValue ();
 		DontWaitInput ();
+		ConditionAndBranch ();
 	}
 
 	void ConditionAndBranch(){
 		bool result = Condition ();
-		if (result)
+		if (result) {
 			Branch ();
-		else
-			DontWaitInput = TrueDontWaitInput;
+		} else {
+			dm.ToNextLine();
+		}
 	}
 
 	static Action NullNameBox = () => {
@@ -311,7 +307,6 @@ public class Dialogue {
 		dm.ToNextLine();
 	};
 	static Action AddLogAndDontWaitInput = () => {
-		dd.AddDialogueLog();
-		dm.ToNextLine();
+		dm.AddLogAndGoToNextLine();
 	};
 }

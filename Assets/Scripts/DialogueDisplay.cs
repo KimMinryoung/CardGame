@@ -138,6 +138,8 @@ public class DialogueDisplay : MonoBehaviour {
 
 	//  Choices showing part starts
 	public void CreateChoiceButtons(List<string> choices){
+		dm.duringChoice = true;
+
 		int x = 0;
 		int y = 150;
 		int ySpace = 75;
@@ -149,6 +151,7 @@ public class DialogueDisplay : MonoBehaviour {
 			GameObject button;
 			int index = i;
 			button = Util.CreateButton (SmallButton, choiceButtonsContainer, x, y, choices [index], () => {
+				dm.duringChoice = false;
 				dm.choiceNum = index + 1;
 				DestroyChoiceButtons();
 				dm.ToNextLine();
@@ -160,9 +163,9 @@ public class DialogueDisplay : MonoBehaviour {
 	void DestroyChoiceButtons(){
 		for (int i = choiceButtons.Count - 1; i >= 0; i--) {
 			GameObject button = choiceButtons [i];
-			choiceButtons.Remove (button);
 			GameObject.Destroy (button);
 		}
+		choiceButtons = new List<GameObject> ();
 	}
 	//  Choices showing part ends
 

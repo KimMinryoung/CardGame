@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour {
 	void Update(){
 		if (SceneManager.GetActiveScene ().name == "Story") {
 			if (!DuringDialogue ()) {
-				LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
+				LoadDialogueFile ("Scene#1", null, NoReplace, emptyCV);
 			} else if (DuringDialogue ()) {
 				if ((Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
 					ClickForNextDialogueLine ();
@@ -49,14 +49,18 @@ public class DialogueManager : MonoBehaviour {
 		}
 	}
 
+	public void AddLogAndGoToNextLine(){
+		dd.AddDialogueLog ();
+		ToNextLine ();
+	}
+
 	public void ClickForNextDialogueLine(){
 		if (dd.IsDialogueLogOpen ()) {
 			OpenOrCloseLog ();
-		} else if (dd.choiceButtons != null && dd.choiceButtons.Count >= 1) {
+		} else if (duringChoice) {
 			// do nothing;
 		} else {
-			dd.AddDialogueLog ();
-			ToNextLine ();
+			AddLogAndGoToNextLine ();
 		}
 	}
 
@@ -142,6 +146,7 @@ public class DialogueManager : MonoBehaviour {
 		return dialogues.Count != 0;
 	}
 
+	public bool duringChoice = false;
 	public int choiceNum;
 
 	public static Dictionary<string, int> emptyCV = new Dictionary<string,int>();
