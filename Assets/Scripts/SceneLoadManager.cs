@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoadManager : MonoBehaviour {
 	void Start(){
 		if (!GameData.gameStarted) {
+			Screen.SetResolution (Screen.width, Screen.width * 9 / 16, true);
 			GameData.gameStarted = true;
 			nextSceneName = "Title";
 			StartCoroutine (LoadScene ());
