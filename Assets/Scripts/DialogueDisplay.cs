@@ -139,6 +139,7 @@ public class DialogueDisplay : MonoBehaviour {
 	//  Choices showing part starts
 	public void CreateChoiceButtons(List<string> choices){
 		dm.duringChoice = true;
+		dm.ForciblyTurnOffSkip ();
 
 		int x = 0;
 		int y = 150;
@@ -193,7 +194,7 @@ public class DialogueDisplay : MonoBehaviour {
 		dialogueLogContentText.text = null;
 		PrintDialogueLog ();
 		RectTransform logBoxRect = dialogueLogBox.GetComponent<RectTransform> ();
-		logBoxRect.sizeDelta = new Vector2 (logBoxRect.rect.width, Math.Max (500, dialogueLogNameText.preferredHeight + 30));
+		logBoxRect.sizeDelta = new Vector2 (logBoxRect.rect.width, Math.Max (491, dialogueLogNameText.preferredHeight + 30));
 
 		dialogueLogScrollView.SetActive (true);
 	}

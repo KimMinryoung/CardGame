@@ -29,6 +29,7 @@ public class DialogueManager : MonoBehaviour {
 
 	int frameWait = 0;
 	public int fastDialogueFrameLag = 5;
+	bool duringSkip = false;
 	void Update(){
 		if (SceneManager.GetActiveScene ().name == "Story") {
 			if (!DuringDialogue ()) {
@@ -36,7 +37,7 @@ public class DialogueManager : MonoBehaviour {
 			} else if (DuringDialogue ()) {
 				if ((Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
 					ClickForNextDialogueLine ();
-				} else if (Input.GetKey (KeyCode.LeftControl)) {
+				} else if (Input.GetKey (KeyCode.LeftControl) || duringSkip) {
 					frameWait++;
 					if (frameWait >= fastDialogueFrameLag) {
 						frameWait = 0;
@@ -47,6 +48,14 @@ public class DialogueManager : MonoBehaviour {
 				}
 			}
 		}
+	}
+	public void TurnOnOrOffSkip(){
+		duringSkip = !duringSkip;
+		frameWait = 0;
+	}
+	public void ForciblyTurnOffSkip(){
+		duringSkip = false;
+		frameWait = 0;
 	}
 
 	public void AddLogAndGoToNextLine(){
