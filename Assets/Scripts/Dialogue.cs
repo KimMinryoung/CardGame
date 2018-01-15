@@ -65,7 +65,11 @@ public class Dialogue {
 				LoadAddValue(targetStat, addedValue, comparedVariables);
 			} else{
 				string name=dtype;
-				if(name.Length != 0 && name != ".?"){
+				if(name.StartsWith(".?")){
+					DontWaitInput = AddLogAndDontWaitInput;
+				}
+				name = name.Replace(".?", "");
+				if(name.Length != 0){
 					LoadNameBox(name);
 				} else{
 					NameBox = EmptyNameBox;
@@ -74,9 +78,6 @@ public class Dialogue {
 				LoadPortraitBox(portraitFileName);
 				string dialogueText=parts[2].Replace('^','\n');
 				LoadTextBox(dialogueText);
-				if(name==".?"){
-					DontWaitInput = AddLogAndDontWaitInput;
-				}
 			}
 
 			if(dtype == "*" || dtype == "+="){
@@ -283,8 +284,14 @@ public class Dialogue {
 		//do nothing
 	};
 	static Action NullPortraitBox = () => {
+		//don't change current portrait box
+		//do nothing
+	};
+	/*
+	static Action RemovePortraitBox = () => {
 		dd.RemovePortraitSprite();
 	};
+	*/
 	static Action NullEffect = () => {
 		//do nothing
 	};
