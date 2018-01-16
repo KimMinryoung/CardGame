@@ -30,6 +30,8 @@ public class DialogueDisplay : MonoBehaviour {
 	Text dialogueLogContentText;
 	Text dialogueLogNameText;
 
+	Text skipButtonText;
+
 	Sprite transparentSprite;
 
 	void Awake () {
@@ -54,6 +56,7 @@ public class DialogueDisplay : MonoBehaviour {
 		dialogueLogNameText = dialogueLogBox.transform.Find ("DialogueLogNameText").GetComponent<Text>();
 		dialogueLogContentText = dialogueLogBox.transform.Find ("DialogueLogContentText").GetComponent<Text> ();
 		dialogueLogScrollView.SetActive (false);
+		skipButtonText = manager.Find ("SkipButton").transform.GetComponentInChildren<Text> ();
 
 		transparentSprite = Resources.Load<Sprite> ("UIImages/transparent");
 
@@ -155,6 +158,7 @@ public class DialogueDisplay : MonoBehaviour {
 				dm.duringChoice = false;
 				dm.choiceNum = index + 1;
 				DestroyChoiceButtons();
+				AddDialogueLogWithString("",  "<color=yellow>" + choices[index] + "</color>");
 				dm.ToNextLine();
 			});
 			choiceButtons.Add (button);
@@ -183,6 +187,9 @@ public class DialogueDisplay : MonoBehaviour {
 	public void AddDialogueLog(){
 		dialogueLogs.Add (new DialogueLog (nameText.text, contentText.text.Replace("\n"," ")));
 	}
+	public void AddDialogueLogWithString(string name, string content){
+		dialogueLogs.Add (new DialogueLog (name, content));
+	}
 	void PrintDialogueLog(){
 		foreach (DialogueLog log in dialogueLogs) {
 			dialogueLogNameText.text += "\n" + log.speakerName;
@@ -194,7 +201,7 @@ public class DialogueDisplay : MonoBehaviour {
 		dialogueLogContentText.text = null;
 		PrintDialogueLog ();
 		RectTransform logBoxRect = dialogueLogBox.GetComponent<RectTransform> ();
-		logBoxRect.sizeDelta = new Vector2 (logBoxRect.rect.width, Math.Max (491, dialogueLogNameText.preferredHeight + 30));
+		logBoxRect.sizeDelta = new Vector2 (logBoxRect.rect.width, Math.Max (dialogueLogScrollView.GetComponent<RectTransform>().rect.height, dialogueLogNameText.preferredHeight + 30));
 
 		dialogueLogScrollView.SetActive (true);
 	}
@@ -205,6 +212,14 @@ public class DialogueDisplay : MonoBehaviour {
 		return dialogueLogScrollView.activeInHierarchy;
 	}
 	// Dialogue log part ends
+
+	public void UpdateSkipButtonText(bool duringSkip){
+		if (duringSkip) {
+			skipButtonText.text = "중단";
+		} else {
+			skipButtonText.text = "스킵";
+		}
+	}
 
 	void Update () {
 		if (isShaking) {

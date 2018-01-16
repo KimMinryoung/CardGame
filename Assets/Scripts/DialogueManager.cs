@@ -31,27 +31,32 @@ public class DialogueManager : MonoBehaviour {
 	public int fastDialogueFrameLag = 5;
 	bool duringSkip = false;
 	void Update(){
-		if (SceneManager.GetActiveScene ().name == "Story") {
-			if (!DuringDialogue ()) {
-				LoadDialogueFile ("Scene#0", null, NoReplace, emptyCV);
-			} else if (DuringDialogue ()) {
-				if ((Input.GetKeyUp (KeyCode.Return)) || Input.GetKeyUp (KeyCode.Space)) {
+		if (DuringDialogue ()) {
+			if ((Input.GetKeyUp (KeyCode.Return)) || Input.GetKey (KeyCode.KeypadEnter) || Input.GetKeyUp (KeyCode.Space)) {
+				ClickForNextDialogueLine ();
+			} else if (Input.GetKey (KeyCode.LeftControl) || duringSkip) {
+				frameWait++;
+				if (frameWait >= fastDialogueFrameLag) {
+					frameWait = 0;
 					ClickForNextDialogueLine ();
-				} else if (Input.GetKey (KeyCode.LeftControl) || duringSkip) {
-					frameWait++;
-					if (frameWait >= fastDialogueFrameLag) {
-						frameWait = 0;
-						ClickForNextDialogueLine ();
-					}
-				} else if (Input.GetKeyDown (KeyCode.L)) {
-					OpenOrCloseLog ();
 				}
+			} else if (Input.GetKeyDown (KeyCode.L)) {
+				OpenOrCloseLog ();
+			}
+		} else{
+			if (SceneManager.GetActiveScene ().name == "Story") {
+				LoadDialogueBySceneNumber (0);
 			}
 		}
+	}
+
+	public void LoadDialogueBySceneNumber(int sceneNumber){
+		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, emptyCV);
 	}
 	public void TurnOnOrOffSkip(){
 		duringSkip = !duringSkip;
 		frameWait = 0;
+		dd.UpdateSkipButtonText (duringSkip);
 	}
 	public void ForciblyTurnOffSkip(){
 		duringSkip = false;
