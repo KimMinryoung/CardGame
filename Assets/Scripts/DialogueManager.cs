@@ -54,6 +54,9 @@ public class DialogueManager : MonoBehaviour {
 		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, emptyCV);
 	}
 	public void TurnOnOrOffSkip(){
+		if (duringChoice) {
+			return;
+		}
 		duringSkip = !duringSkip;
 		frameWait = 0;
 		dd.UpdateSkipButtonText (duringSkip);
@@ -61,6 +64,7 @@ public class DialogueManager : MonoBehaviour {
 	public void ForciblyTurnOffSkip(){
 		duringSkip = false;
 		frameWait = 0;
+		dd.UpdateSkipButtonText (duringSkip);
 	}
 
 	public void AddLogAndGoToNextLine(){
