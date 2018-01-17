@@ -60,6 +60,8 @@ public class DialogueDisplay : MonoBehaviour {
 
 		transparentSprite = Resources.Load<Sprite> ("UIImages/transparent");
 
+		SCREENSCALE = new Vector2 (Screen.width / 1280f, Screen.height / 720f);
+
 		dialogueLogs = new List<DialogueLog> ();
 	}
 	void Start(){
@@ -145,8 +147,8 @@ public class DialogueDisplay : MonoBehaviour {
 		dm.ForciblyTurnOffSkip ();
 
 		int x = 0;
-		int y = 150;
-		int ySpace = 75;
+		int y = (int)(150f * SCREENSCALE.y);
+		int ySpace = (int)(75f * SCREENSCALE.y);
 		choiceButtons = new List<GameObject> ();
 		for (int i = 0; i < choices.Count; i++) {
 			if (choices [i] == "") {
@@ -234,4 +236,6 @@ public class DialogueDisplay : MonoBehaviour {
 			}
 		}
 	}
+
+	static Vector2 SCREENSCALE = new Vector2 (1f, 1f);
 }
