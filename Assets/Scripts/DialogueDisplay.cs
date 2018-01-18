@@ -217,7 +217,7 @@ public class DialogueDisplay : MonoBehaviour {
 
 	public void UpdateSkipButtonText(bool duringSkip){
 		if (duringSkip) {
-			skipButtonText.text = "중단";
+			skipButtonText.text = "정지";
 		} else {
 			skipButtonText.text = "스킵";
 		}
