@@ -209,6 +209,8 @@ public class Dialogue {
 	void LoadAddValue(string targetStat, int addedValue, Dictionary<string, int> comparedVariables){
 		ChangeValue = () => {
 			comparedVariables[targetStat] += addedValue;
+			dd.EnableStatChangeBox();
+			dd.PutStatChangeText(targetStat+" "+Util.ValueChangeString(addedValue));
 		};
 	}
 	void LoadNameBox(string name){

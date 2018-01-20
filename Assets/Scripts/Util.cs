@@ -61,6 +61,16 @@ public class Util {
 		return message;
 	}
 
+	public static string ValueChangeString(int change){
+		if (change > 0) {
+			return "+" + change;
+		} else if (change < 0) {
+			return "-" + change;
+		} else {
+			return "" + change;
+		}
+	}
+
 	public static GameObject CreateButton(GameObject prefab, Transform parent, int x, int y, string text, UnityEngine.Events.UnityAction triggeredAction){
 		GameObject button = MonoBehaviour.Instantiate (prefab, parent);
 		button.transform.Translate (new Vector3 (x, y, 0));

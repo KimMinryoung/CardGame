@@ -20,6 +20,8 @@ public class DialogueDisplay : MonoBehaviour {
 	Text nameText;
 	Image contentBox;
 	Text contentText;
+	GameObject statChangeBox;
+	Text statChangeText;
 
 	public GameObject SmallButton;
 	public List<GameObject> choiceButtons;
@@ -50,6 +52,8 @@ public class DialogueDisplay : MonoBehaviour {
 		nameText=manager.Find ("NameBox").Find ("NameText").GetComponent<Text>();
 		contentBox=manager.Find ("ContentBox").GetComponent<Image>();
 		contentText=manager.Find ("ContentBox").Find ("ContentText").GetComponent<Text>();
+		statChangeBox = manager.Find ("StatChangeBox").gameObject;
+		statChangeText = statChangeBox.transform.Find ("StatChangeText").GetComponent<Text> ();
 		choiceButtonsContainer = manager.Find ("ChoiceButtonsContainer");
 		dialogueLogScrollView = manager.Find ("DialogueLogScrollView").gameObject;
 		dialogueLogBox = GameObject.Find ("DialogueLogBox").gameObject;
@@ -72,6 +76,7 @@ public class DialogueDisplay : MonoBehaviour {
 		RemoveIllustSprite ();
 		DisableNameBox ();
 		DisableContentBox ();
+		DisableStatChangeBox ();
 		PutNameText (null);
 		PutContentText (null);
 	}
@@ -87,11 +92,21 @@ public class DialogueDisplay : MonoBehaviour {
 	public void EnableContentBox(){
 		contentBox.enabled = true;
 	}
+	public void DisableStatChangeBox(){
+		statChangeBox.SetActive (false);
+	}
+	public void EnableStatChangeBox(){
+		statChangeBox.SetActive (true);
+		remainStatChangeDisplayTime = 2.0f;
+	}
 	public void PutNameText(string text){
 		nameText.text = text;
 	}
 	public void PutContentText(string text){
 		contentText.text = text;
+	}
+	public void PutStatChangeText(string text){
+		statChangeText.text = text;
 	}
 	public void RemoveBackgroundSprite(){
 		PutBackgroundSprite (transparentSprite);
@@ -140,6 +155,8 @@ public class DialogueDisplay : MonoBehaviour {
 		isShaking = true;
 		remainShakePower = initialPower;
 	}
+
+	float remainStatChangeDisplayTime = 0.0f;
 
 	//  Choices showing part starts
 	public void CreateChoiceButtons(List<string> choices){
@@ -233,6 +250,12 @@ public class DialogueDisplay : MonoBehaviour {
 				gameObject.transform.localPosition = new Vector3 (0, 0, gameObject.transform.localPosition.z);
 				remainShakePower = 0;
 				isShaking = false;
+			}
+		}
+		if (statChangeBox.activeSelf) {
+			remainStatChangeDisplayTime -= Time.deltaTime;
+			if (remainStatChangeDisplayTime < 0) {
+				DisableStatChangeBox ();
 			}
 		}
 	}
