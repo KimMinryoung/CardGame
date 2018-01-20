@@ -131,7 +131,7 @@ public class Dialogue {
 	}
 	void LoadEffectScript(string commandObject){
 		Effect = () => {
-			dm.LoadDialogueFile(commandObject, null, DialogueManager.NoReplace, DialogueManager.emptyCV);
+			dm.LoadDialogueFile(commandObject, null, DialogueManager.NoReplace, GameData.stats);
 		};
 	}
 	void LoadToTheTitle(){

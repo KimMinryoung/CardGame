@@ -45,13 +45,14 @@ public class DialogueManager : MonoBehaviour {
 			}
 		} else{
 			if (SceneManager.GetActiveScene ().name == "Story") {
+				GameData.InitializeStats ();
 				LoadDialogueBySceneNumber (0);
 			}
 		}
 	}
 
 	public void LoadDialogueBySceneNumber(int sceneNumber){
-		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, emptyCV);
+		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, GameData.stats);
 	}
 	public void TurnOnOrOffSkip(){
 		if (duringChoice) {
