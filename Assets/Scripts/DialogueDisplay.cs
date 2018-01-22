@@ -79,6 +79,7 @@ public class DialogueDisplay : MonoBehaviour {
 		DisableStatChangeBox ();
 		PutNameText (null);
 		PutContentText (null);
+		StopQuivering ();
 	}
 	public void DisableNameBox(){
 		nameBox.enabled = false;
@@ -97,7 +98,6 @@ public class DialogueDisplay : MonoBehaviour {
 	}
 	public void EnableStatChangeBox(){
 		statChangeBox.SetActive (true);
-		remainStatChangeDisplayTime = 2.0f;
 	}
 	public void PutNameText(string text){
 		nameText.text = text;
@@ -149,14 +149,44 @@ public class DialogueDisplay : MonoBehaviour {
 		Sprite sprite=Resources.Load<Sprite>("Illusts/"+name);
 		PutIllustSprite(sprite);
 	}
-	bool isShaking = false;
-	float remainShakePower = 0.0f;
-	public void StartShaking(float initialPower){
-		isShaking = true;
-		remainShakePower = initialPower;
+
+	static float QUAKEPOWER = 2.0f;
+	public IEnumerator Quake(){
+		float remainShakePower = QUAKEPOWER;
+		while (remainShakePower > 0) {
+			remainShakePower -= 1.0f * Time.deltaTime;
+			Vector2 offset = 10 * UnityEngine.Random.insideUnitCircle * remainShakePower * SCREENSCALE.y;
+			gameObject.transform.localPosition = new Vector3 (offset.x, offset.y, gameObject.transform.localPosition.z);
+			yield return null;
+		}
+		gameObject.transform.localPosition = new Vector3 (0, 0, gameObject.transform.localPosition.z);
+	}
+	bool isQuivering = false;
+	static float QUIVERPOWER = 0.5f;
+	public IEnumerator Quiver(){
+		float remainShakePower = QUIVERPOWER;
+		isQuivering = true;
+		while (isQuivering) {
+			Vector2 offset = 10 * UnityEngine.Random.insideUnitCircle * remainShakePower * SCREENSCALE.y;
+			gameObject.transform.localPosition = new Vector3 (offset.x, offset.y, gameObject.transform.localPosition.z);
+			yield return null;
+		}
+		gameObject.transform.localPosition = new Vector3 (0, 0, gameObject.transform.localPosition.z);
+	}
+	public void StopQuivering(){
+		isQuivering = false;
 	}
 
-	float remainStatChangeDisplayTime = 0.0f;
+	public IEnumerator ShowStatChange(){
+		float remainStatChangeDisplayTime = 2.0f;
+		EnableStatChangeBox ();
+		while (remainStatChangeDisplayTime > 0) {
+			remainStatChangeDisplayTime -= Time.deltaTime;
+			yield return null;
+		}
+		DisableStatChangeBox ();
+		PutStatChangeText ("");
+	}
 
 	//  Choices showing part starts
 	public void CreateChoiceButtons(List<string> choices){
@@ -241,23 +271,6 @@ public class DialogueDisplay : MonoBehaviour {
 	}
 
 	void Update () {
-		if (isShaking) {
-			if (remainShakePower > 0) {
-				remainShakePower -= 1.0f * Time.deltaTime;
-				Vector2 offset = 10 * UnityEngine.Random.insideUnitCircle * remainShakePower;
-				gameObject.transform.localPosition = new Vector3 (offset.x, offset.y, gameObject.transform.localPosition.z);
-			} else {
-				gameObject.transform.localPosition = new Vector3 (0, 0, gameObject.transform.localPosition.z);
-				remainShakePower = 0;
-				isShaking = false;
-			}
-		}
-		if (statChangeBox.activeSelf) {
-			remainStatChangeDisplayTime -= Time.deltaTime;
-			if (remainStatChangeDisplayTime < 0) {
-				DisableStatChangeBox ();
-			}
-		}
 	}
 
 	static Vector2 SCREENSCALE = new Vector2 (1f, 1f);

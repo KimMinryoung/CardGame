@@ -106,26 +106,30 @@ public class Dialogue {
 			LoadEffectBGM (commandObject);
 		} else if (commandType == "효과음") {
 			LoadEffectSE (commandObject);
-		} else if (commandType == "흔들어") {
-			LoadEffectShaking ();
+		} else if (commandType == "지진") {
+			LoadEffectQuaking ();
+		} else if (commandType == "떨림") {
+			LoadEffectQuivering ();
 		} else {
 			Debug.LogError ("undefined effectType : " + commandType);
 		}
 	}
 	void LoadEffectDisappear(string commandObject){
-		if(commandObject=="배경"){
+		if (commandObject == "배경") {
 			Effect = () => {
-				dd.RemoveBackgroundSprite();
+				dd.RemoveBackgroundSprite ();
 			};
-		}
-		else if(commandObject=="일러"){
+		} else if (commandObject == "일러") {
 			Effect = () => {
-				dd.RemoveIllustSprite();
+				dd.RemoveIllustSprite ();
 			};
-		}
-		else if(commandObject=="배경음"){
+		} else if (commandObject == "배경음") {
 			Effect = () => {
-				SoundManager.Instance.EndBGM();
+				SoundManager.Instance.EndBGM ();
+			};
+		} else if (commandObject == "떨림") {
+			Effect = () => {
+				dd.StopQuivering ();
 			};
 		}
 	}
@@ -159,9 +163,14 @@ public class Dialogue {
 			SoundManager.Instance.PlaySE(commandObject);
 		};
 	}
-	void LoadEffectShaking(){
+	void LoadEffectQuaking(){
 		Effect = () => {
-			dd.StartShaking (2);
+			dd.StartCoroutine(dd.Quake());
+		};
+	}
+	void LoadEffectQuivering(){
+		Effect = () => {
+			dd.StartCoroutine(dd.Quiver());
 		};
 	}
 	void LoadBranch(string destinyLabel){
@@ -209,7 +218,7 @@ public class Dialogue {
 	void LoadAddValue(string targetStat, int addedValue, Dictionary<string, int> comparedVariables){
 		ChangeValue = () => {
 			comparedVariables[targetStat] += addedValue;
-			dd.EnableStatChangeBox();
+			dd.StartCoroutine(dd.ShowStatChange());
 			dd.PutStatChangeText(targetStat+" "+Util.ValueChangeString(addedValue));
 		};
 	}
