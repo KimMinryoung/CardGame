@@ -135,6 +135,7 @@ public class Dialogue {
 	}
 	void LoadEffectScript(string commandObject){
 		Effect = () => {
+			dm.DialoguesClear ();
 			dm.LoadDialogueFile(commandObject, null, DialogueManager.NoReplace, GameData.stats);
 		};
 	}

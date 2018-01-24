@@ -245,6 +245,8 @@ public class DialogueDisplay : MonoBehaviour {
 			dialogueLogNameText.text += "\n" + log.speakerName;
 			dialogueLogContentText.text += "\n" + log.content;
 		}
+		dialogueLogNameText.text = dialogueLogNameText.text.Substring ("\n".Length);
+		dialogueLogContentText.text = dialogueLogContentText.text.Substring ("\n".Length);
 	}
 	public void OpenDialogueLog(){
 		dialogueLogNameText.text = null;

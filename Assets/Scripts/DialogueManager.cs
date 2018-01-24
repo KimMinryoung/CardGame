@@ -52,6 +52,7 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	public void LoadDialogueBySceneNumber(int sceneNumber){
+		DialoguesClear ();
 		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, GameData.stats);
 		ToNextLine ();
 	}
@@ -132,15 +133,13 @@ public class DialogueManager : MonoBehaviour {
 		dialogues.Add (dialogue);
 	}
 
-	void DialoguesClear(){
+	public void DialoguesClear(){
 		dialogues.Clear ();
 		lineNum = -1;
 	}
 
 	bool LineOver(){
 		if (lineNum >= dialogues.Count) {
-			DialoguesClear ();
-			dd.DialogueDisplayClear ();
 			return true;
 		} else {
 			return false;
@@ -149,6 +148,8 @@ public class DialogueManager : MonoBehaviour {
 	public void ToNextLine(){
 		lineNum++;
 		if (LineOver ()) {
+			DialoguesClear ();
+			dd.DialogueDisplayClear ();
 			return;
 		}
 		ExecutePresentLine ();
