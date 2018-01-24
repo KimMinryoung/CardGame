@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour {
 		Person.dm = this;
 
 		dialogues = new List<Dialogue>();
-		lineNum = 0;
+		lineNum = -1;
 	}
 
 	void Start(){
@@ -53,6 +53,7 @@ public class DialogueManager : MonoBehaviour {
 
 	public void LoadDialogueBySceneNumber(int sceneNumber){
 		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, GameData.stats);
+		ToNextLine ();
 	}
 	public void TurnOnOrOffSkip(){
 		if (duringChoice) {
@@ -124,20 +125,16 @@ public class DialogueManager : MonoBehaviour {
 		Dialogue dialogue = new Dialogue ();
 		dialogue.LoadDialogueLine (line, comparedVariables);
 		dialogues.Add (dialogue);
-		if(lineNum == 0)
-			ExecutePresentLine();
 	}
 	public void LoadMessageLine(string line){
 		Dialogue dialogue = new Dialogue ();
 		dialogue.LoadMessageLine (line);
 		dialogues.Add (dialogue);
-		if(lineNum == 0)
-			ExecutePresentLine();
 	}
 
 	void DialoguesClear(){
 		dialogues.Clear ();
-		lineNum = 0;
+		lineNum = -1;
 	}
 
 	bool LineOver(){
@@ -145,24 +142,26 @@ public class DialogueManager : MonoBehaviour {
 			DialoguesClear ();
 			dd.DialogueDisplayClear ();
 			return true;
-		}
-		else
+		} else {
 			return false;
+		}
 	}
 	public void ToNextLine(){
 		lineNum++;
-		if (LineOver ())
+		if (LineOver ()) {
 			return;
+		}
 		ExecutePresentLine ();
 	}
 	public void ExecutePresentLine(){
-		if (LineOver ())
+		if (LineOver ()) {
 			return;
+		}
 		dialogues [lineNum].ExecuteDialogue ();
 	}
 
 	public bool DuringDialogue(){
-		return dialogues.Count != 0;
+		return dialogues != null && dialogues.Count != 0;
 	}
 
 	public bool duringChoice = false;

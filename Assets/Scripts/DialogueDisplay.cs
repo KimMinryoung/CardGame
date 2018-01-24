@@ -107,6 +107,7 @@ public class DialogueDisplay : MonoBehaviour {
 	}
 	public void PutStatChangeText(string text){
 		statChangeText.text = text;
+		AddDialogueLogWithString("",  "<color=#FFB6C1>" + text + "</color>");
 	}
 	public void RemoveBackgroundSprite(){
 		PutBackgroundSprite (transparentSprite);
