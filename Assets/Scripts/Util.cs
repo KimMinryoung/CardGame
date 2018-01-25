@@ -64,8 +64,6 @@ public class Util {
 	public static string ValueChangeString(int change){
 		if (change > 0) {
 			return "+" + change;
-		} else if (change < 0) {
-			return "-" + change;
 		} else {
 			return "" + change;
 		}
