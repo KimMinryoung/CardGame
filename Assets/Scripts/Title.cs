@@ -13,8 +13,6 @@ public class Title : MonoBehaviour {
 	}
 
 	void Start () {
-		SoundManager.Instance.PlayBGM ("Precious");
-
 		int x = 0;
 		int y = -100;
 		int ySpace = 100;
