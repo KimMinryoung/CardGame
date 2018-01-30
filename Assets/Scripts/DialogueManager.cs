@@ -49,12 +49,16 @@ public class DialogueManager : MonoBehaviour {
 			}
 		} else{
 			if (SceneManager.GetActiveScene ().name == "Story") {
-				GameData.InitializeStats ();
-				LoadDialogueBySceneName (dialogueSceneNameToLoad);
+				LoadSaveData ();
 			}
 		}
 	}
 
+	void LoadSaveData(){
+		SaveData data = SaveData.LoadFromFile ();
+		GameData.stats = new Dictionary<string, int> (data.stats);
+		LoadDialogueBySceneName (data.sceneName);
+	}
 	public void LoadDialogueBySceneNumber(int sceneNumber){
 		LoadDialogueBySceneName ("Scene#" + sceneNumber);
 	}
@@ -62,7 +66,7 @@ public class DialogueManager : MonoBehaviour {
 		DialoguesClear ();
 		LoadDialogueFile (sceneName, null, NoReplace, GameData.stats);
 		currentDialogueSceneName = sceneName;
-		Save ();
+		SaveData.SaveCurrentStatusToFile ();
 		ToNextLine ();
 	}
 	public void TurnOnOrOffSkip(){
@@ -168,15 +172,6 @@ public class DialogueManager : MonoBehaviour {
 			return;
 		}
 		dialogues [lineNum].ExecuteDialogue ();
-	}
-
-	void Save(){
-		SaveData saveData = new SaveData ();
-		saveData.SetCurrentData ();
-		string data = saveData.GetDataString ();
-		Debug.Log(data);
-		string filePath = Application.persistentDataPath + "/save.csv";
-		File.WriteAllText(filePath, data, Encoding.UTF8);
 	}
 
 	public bool DuringDialogue(){
