@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Text;
+using System.IO;
 
 public class DialogueManager : MonoBehaviour {
 	static DialogueManager instance;
@@ -12,13 +14,15 @@ public class DialogueManager : MonoBehaviour {
 
 	public static DialogueDisplay dd;
 
+	public static string dialogueSceneNameToLoad;
+	public static string currentDialogueSceneName;
+
 	public List<Dialogue> dialogues;
 	public int lineNum;
 
 	void Awake (){
 		instance = this;
 		Dialogue.dm = this;
-		Person.dm = this;
 
 		dialogues = new List<Dialogue>();
 		lineNum = -1;
@@ -46,14 +50,19 @@ public class DialogueManager : MonoBehaviour {
 		} else{
 			if (SceneManager.GetActiveScene ().name == "Story") {
 				GameData.InitializeStats ();
-				LoadDialogueBySceneNumber (0);
+				LoadDialogueBySceneName (dialogueSceneNameToLoad);
 			}
 		}
 	}
 
 	public void LoadDialogueBySceneNumber(int sceneNumber){
+		LoadDialogueBySceneName ("Scene#" + sceneNumber);
+	}
+	public void LoadDialogueBySceneName(string sceneName){
 		DialoguesClear ();
-		LoadDialogueFile ("Scene#" + sceneNumber, null, NoReplace, GameData.stats);
+		LoadDialogueFile (sceneName, null, NoReplace, GameData.stats);
+		currentDialogueSceneName = sceneName;
+		Save ();
 		ToNextLine ();
 	}
 	public void TurnOnOrOffSkip(){
@@ -93,7 +102,7 @@ public class DialogueManager : MonoBehaviour {
 		}
 	}
 
-	public void LoadDialogueFile(string fileName, string label, Func<string,string> ReplaceWords, Dictionary<string,int> comparedVariables){
+	void LoadDialogueFile(string fileName, string label, Func<string,string> ReplaceWords, Dictionary<string,int> comparedVariables){
 		TextAsset dialogueTextAsset = Resources.Load<TextAsset> ("Texts/" + fileName);
 		Debug.Log (fileName);
 		Debug.Assert (dialogueTextAsset != null);
@@ -159,6 +168,15 @@ public class DialogueManager : MonoBehaviour {
 			return;
 		}
 		dialogues [lineNum].ExecuteDialogue ();
+	}
+
+	void Save(){
+		SaveData saveData = new SaveData ();
+		saveData.SetCurrentData ();
+		string data = saveData.GetDataString ();
+		Debug.Log(data);
+		string filePath = Application.persistentDataPath + "/save.csv";
+		File.WriteAllText(filePath, data, Encoding.UTF8);
 	}
 
 	public bool DuringDialogue(){

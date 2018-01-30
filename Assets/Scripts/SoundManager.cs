@@ -50,15 +50,23 @@ public class SoundManager : MonoBehaviour {
 			soundPlayer.Play ();
 		}
 	}
-	public void StopBGM(){
+	/*public void StopBGM(){
 		soundPlayer.Stop ();
-	}
+	}*/
 	public void ReplayBGM(){
 		soundPlayer.Play();
 	}
 	public void EndBGM(){
 		PlayBGM ("None");
 	}
+	public string BGMName(){
+		if(soundPlayer.clip==null){
+			return "None";
+		} else{
+			return soundPlayer.clip.name;
+		}
+	}
+
 	public void PlaySE(string name){
 		soundPlayer.PlayOneShot (SEs[name]);
 		//soundPlayer.PlayOneShot (SEs[name], Configuration.soundEffectVolume);

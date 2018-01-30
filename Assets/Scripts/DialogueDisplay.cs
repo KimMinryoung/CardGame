@@ -126,11 +126,16 @@ public class DialogueDisplay : MonoBehaviour {
 		portrait.sprite = sprite;
 	}
 	public void PutPortraitSprite(String name){
-		Sprite sprite=Resources.Load<Sprite>("Portraits/"+name);
+		Sprite sprite=Resources.Load<Sprite>("Portraits/"+name.Replace("^", ""));
 		if (sprite == null) {
 			RemovePortraitSprite ();
 		} else {
 			PutPortraitSprite (sprite);
+		}
+		if (name.Contains ("^")) {
+			BlackenPortraitSprite ();
+		} else {
+			BrightenPortraitSprite ();
 		}
 	}
 	public void BlackenPortraitSprite(){
@@ -241,6 +246,9 @@ public class DialogueDisplay : MonoBehaviour {
 		dialogueLogs.Add (new DialogueLog (name, content));
 	}
 	void PrintDialogueLog(){
+		if (dialogueLogs.Count == 0) {
+			return;
+		}
 		foreach (DialogueLog log in dialogueLogs) {
 			dialogueLogNameText.text += "\n" + log.speakerName;
 			dialogueLogContentText.text += "\n" + log.content;

@@ -136,7 +136,7 @@ public class Dialogue {
 	void LoadEffectScript(string commandObject){
 		Effect = () => {
 			dm.DialoguesClear ();
-			dm.LoadDialogueFile(commandObject, null, DialogueManager.NoReplace, GameData.stats);
+			dm.LoadDialogueBySceneName(commandObject);
 		};
 	}
 	void LoadToTheTitle(){
@@ -230,17 +230,9 @@ public class Dialogue {
 		};
 	}
 	void LoadPortraitBox(string portraitFileName){
-		if (portraitFileName.Contains ("^")) {
-			PortraitBox = () => {
-				dd.BlackenPortraitSprite ();
-				dd.PutPortraitSprite (portraitFileName.Replace("^", ""));
-			};
-		} else {
-			PortraitBox = () => {
-				dd.BrightenPortraitSprite ();
-				dd.PutPortraitSprite (portraitFileName);
-			};
-		}
+		PortraitBox = () => {
+			dd.PutPortraitSprite (portraitFileName);
+		};
 	}
 	void LoadTextBox(string dialogueText){
 		string displayedText = "";

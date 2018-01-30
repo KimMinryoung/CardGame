@@ -14,13 +14,20 @@ public class Title : MonoBehaviour {
 
 	void Start () {
 		int x = 0;
-		int y = -100;
-		int ySpace = 100;
-		GameObject button;
-		button = Util.CreateButton (OnlyTextButton, Canvas.transform, x, y, "시작한다", () => SceneManager.LoadScene ("Story"));
-		button.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (200, 80);
-		button.transform.Find ("Text").GetComponent<Text> ().fontSize = 45;
-		y += ySpace;
+		int y = (int)(-70f * Screen.height / 720f);
+		int ySpace = (int)(100f * Screen.height / 720f);
+		GameObject startButton;
+		startButton = Util.CreateButton (OnlyTextButton, Canvas.transform, x, y, "시작한다", () => {
+			DialogueManager.dialogueSceneNameToLoad = "Scene#0";
+			SceneManager.LoadScene ("Story");
+		});
+		startButton.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (200, 80);
+		startButton.transform.Find ("Text").GetComponent<Text> ().fontSize = 45;
+		y -= ySpace;
+		GameObject loadButton;
+		loadButton = Util.CreateButton (OnlyTextButton, Canvas.transform, x, y, "불러온다", () => {});
+		loadButton.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (200, 80);
+		loadButton.transform.Find ("Text").GetComponent<Text> ().fontSize = 45;
 	}
 
 	void Update () {
