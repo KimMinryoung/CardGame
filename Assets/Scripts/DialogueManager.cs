@@ -178,6 +178,10 @@ public class DialogueManager : MonoBehaviour {
 		return dialogues != null && dialogues.Count != 0;
 	}
 
+	public void ExitGame(){
+		Application.Quit ();
+	}
+
 	public bool duringChoice = false;
 	public int choiceNum;
 

@@ -30,6 +30,13 @@ public class Title : MonoBehaviour {
 		});
 		loadButton.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (200, 80);
 		loadButton.transform.Find ("Text").GetComponent<Text> ().fontSize = 45;
+		y -= ySpace;
+		GameObject exitButton;
+		exitButton = Util.CreateButton (OnlyTextButton, Canvas.transform, x, y, "종료한다", () => {
+			Application.Quit();
+		});
+		exitButton.transform.Find ("Text").GetComponent<RectTransform> ().sizeDelta = new Vector2 (200, 80);
+		exitButton.transform.Find ("Text").GetComponent<Text> ().fontSize = 45;
 	}
 
 	void Update () {
