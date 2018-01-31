@@ -16,6 +16,8 @@ public class StoryTest : MonoBehaviour {
 	}
 	public void LoadSceneByInput(){
 		GameData.InitializeStats ();
-		GameObject.Find ("DialogueManager").GetComponent<DialogueManager> ().LoadDialogueBySceneNumber (Convert.ToInt32 (inputField.text));
+		DialogueManager dm = GameObject.Find ("DialogueManager").GetComponent<DialogueManager> ();
+		dm.LoadDialogueBySceneNumber (Convert.ToInt32 (inputField.text));
+		dm.ToNextLine ();
 	}
 }

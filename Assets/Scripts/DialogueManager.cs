@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	int frameWait = 0;
-	public int fastDialogueFrameLag = 5;
+	public int fastDialogueFrameLag = 4;
 	bool duringSkip = false;
 	void Update(){
 		if (DuringDialogue ()) {
@@ -58,6 +58,7 @@ public class DialogueManager : MonoBehaviour {
 		SaveData data = SaveData.LoadFromFile ();
 		GameData.stats = new Dictionary<string, int> (data.stats);
 		LoadDialogueBySceneName (data.sceneName);
+		ToNextLine ();
 	}
 	public void LoadDialogueBySceneNumber(int sceneNumber){
 		LoadDialogueBySceneName ("Scene#" + sceneNumber);
@@ -67,7 +68,6 @@ public class DialogueManager : MonoBehaviour {
 		LoadDialogueFile (sceneName, null, NoReplace, GameData.stats);
 		currentDialogueSceneName = sceneName;
 		SaveData.SaveCurrentStatusToFile ();
-		ToNextLine ();
 	}
 	public void TurnOnOrOffSkip(){
 		if (duringChoice) {
