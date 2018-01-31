@@ -191,7 +191,6 @@ public class DialogueDisplay : MonoBehaviour {
 			yield return null;
 		}
 		DisableStatChangeBox ();
-		PutStatChangeText ("");
 	}
 
 	//  Choices showing part starts
