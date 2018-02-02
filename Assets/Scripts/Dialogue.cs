@@ -100,6 +100,8 @@ public class Dialogue {
 			LoadToTheTitle ();
 		} else if (commandType == "배경") {
 			LoadEffectBackground (commandObject);
+		} else if (commandType == "배경페이드인") {
+			LoadEffectFadeInBackground (commandObject);
 		} else if (commandType == "일러") {
 			LoadEffectIllust (commandObject);
 		} else if (commandType == "배경음") {
@@ -147,6 +149,11 @@ public class Dialogue {
 	void LoadEffectBackground(string commandObject){
 		Effect = () => {
 			dd.PutBackgroundSprite(commandObject);
+		};
+	}
+	void LoadEffectFadeInBackground(string commandObject){
+		Effect = () => {
+			dd.FadeInBackgroundSprite(commandObject);
 		};
 	}
 	void LoadEffectIllust(string commandObject){

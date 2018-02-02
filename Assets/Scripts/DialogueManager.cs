@@ -91,6 +91,8 @@ public class DialogueManager : MonoBehaviour {
 	public void ClickForNextDialogueLine(){
 		if (dd.IsDialogueLogOpen ()) {
 			OpenOrCloseLog ();
+		} else if (dd.IsFading ()) {
+			// do nothing;
 		} else if (duringChoice) {
 			// do nothing;
 		} else {

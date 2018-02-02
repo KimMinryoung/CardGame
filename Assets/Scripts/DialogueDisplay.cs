@@ -115,9 +115,25 @@ public class DialogueDisplay : MonoBehaviour {
 	void PutBackgroundSprite(Sprite sprite){
 		background.sprite = sprite;
 	}
-	public void PutBackgroundSprite(String name){
+	public void PutBackgroundSprite(string name){
 		Sprite sprite=Resources.Load<Sprite>("Backgrounds/"+name);
-		PutBackgroundSprite(sprite);
+		PutBackgroundSprite (sprite);
+	}
+	IEnumerator FadeInBackgroundSpriteIEnumerator(string name){
+		isFading = true;
+		if (background.sprite != transparentSprite) {
+			yield return FadeOut ();
+		}
+		PutBackgroundSprite (name);
+		yield return FadeIn ();
+		isFading = false;
+	}
+	public void FadeInBackgroundSprite(string name){
+		StartCoroutine (FadeInBackgroundSpriteIEnumerator (name));
+	}
+	bool isFading = false;
+	public bool IsFading(){
+		return isFading;
 	}
 	public void RemovePortraitSprite(){
 		PutPortraitSprite (transparentSprite);
@@ -181,6 +197,28 @@ public class DialogueDisplay : MonoBehaviour {
 	}
 	public void StopQuivering(){
 		isQuivering = false;
+	}
+
+	static float FADETIME = 0.2f;
+	public IEnumerator FadeIn(){
+		float remainFadeTime = FADETIME;
+		while (remainFadeTime > 0) {
+			remainFadeTime -= 1.0f * Time.deltaTime;
+			float value = 1 - remainFadeTime / FADETIME;
+			background.color = new Color (value, value, value);
+			yield return null;
+		}
+		background.color = new Color (1, 1, 1);
+	}
+	public IEnumerator FadeOut(){
+		float remainFadeTime = FADETIME;
+		while (remainFadeTime > 0) {
+			remainFadeTime -= 1.0f * Time.deltaTime;
+			float value = remainFadeTime / FADETIME;
+			background.color = new Color (value, value, value);
+			yield return null;
+		}
+		background.color = new Color (0, 0, 0);
 	}
 
 	public IEnumerator ShowStatChange(){
@@ -263,6 +301,7 @@ public class DialogueDisplay : MonoBehaviour {
 		logBoxRect.sizeDelta = new Vector2 (logBoxRect.rect.width, Math.Max (dialogueLogScrollView.GetComponent<RectTransform>().rect.height, dialogueLogNameText.preferredHeight + 30));
 
 		dialogueLogScrollView.SetActive (true);
+		dialogueLogScrollView.GetComponentInChildren<Scrollbar> ().value = 0;
 	}
 	public void CloseDialogueLog(){
 		dialogueLogScrollView.SetActive (false);
